@@ -2,3 +2,5 @@
 enableCORS = true
 enableXsrfProtection = true
 port = 8500
+sslCertFile = "/app/private.pem"
+sslKeyFile = "/app/key.pem"

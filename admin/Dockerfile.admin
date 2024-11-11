@@ -11,4 +11,5 @@ COPY ./admin/config.toml /app/config.toml
 # Открываем порт 8501
 EXPOSE 8500
 #
-ENTRYPOINT ["streamlit", "run", "admin/stream_app.py", "--server.port=8500"]
+# ENTRYPOINT ["streamlit", "run", "admin/stream_app.py", "--server.port=8500"]
+ENTRYPOINT streamlit run admin/stream_app.py --server.port=8500 --server.sslCertFile=/app/key.pem --server.sslKeyFile=/app/private.pem

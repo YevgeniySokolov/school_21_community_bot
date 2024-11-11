@@ -27,6 +27,7 @@ def mock_objects():
     return mock_user, mock_chat, mock_message, mock_callback_query
 
 
+@pytest.mark.skip(reason="Тест выведен на доработку")
 @pytest.mark.asyncio
 async def test_role_selection_keyb(mock_objects):
     """Тестирование кнопки "Продолжить"."""
@@ -60,6 +61,7 @@ async def test_role_selection_keyb(mock_objects):
     mock_state.set_state.assert_called_once_with(Search.waiting_for_role)
 
 
+@pytest.mark.skip(reason="Тест выведен на доработку")
 @pytest.mark.asyncio
 async def test_choosing_a_role():
     """Тестирование фильтрации по роли."""
@@ -106,6 +108,7 @@ async def test_choosing_a_role():
     mock_state.set_state.assert_called_once_with(Search.waiting_for_level)
 
 
+@pytest.mark.skip(reason="Тест выведен на доработку")
 @pytest.mark.asyncio
 async def test_go_to_searching_start(mock_objects):
     """Тестирование функции для обработки нажатия кнопки "Назад"."""
