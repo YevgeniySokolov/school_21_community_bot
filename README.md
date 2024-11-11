@@ -158,27 +158,13 @@ ALEMBIC_CONFIG=/app/database/alembic.ini
 - добавление API для интеграции с другими системами.
 - команда /support для перехода пользователя на портал или форму технической поддержки.
 
-## Авторы проекта
-Артем Чебыкин - Python-developer
-E-mail: chebykin.ag@yandex.ru
-GitHub: https://github.com/m0t0r0v
+## 👥 Авторы проекта
 
-Денис Фадеев - Python-developer
-E-mail: denfizzz1978@yandex.ru
-GitHub: https://github.com/Denfizzz
-
-Артем Шенин - Python-developer
-E-mail: rassada2021@yandex.ru
-GitHub: https://github.com/Artem-SPb
-
-Петр Виноградов - Python-developer
-E-mail: petrowaw@yandex.ru
-GitHub: https://github.com/PeterFVin
-
-Денис Смирнов - Python-developer
-E-mail: smirnov.denis900@yandex.ru
-GitHub: https://github.com/dxndigiden
-
-Евгений Соколов - TeamLead
-E-mail: ea.sokolov.87@yandex.ru
-GitHub: https://github.com/YevgeniySokolov
+| 👤 Автор            | 💼 Должность        | ✉️ E-mail                       | 🔗 GitHub                                            |
+|---------------------|----------------------|---------------------------------|-------------------------------------------------------|
+| Артем Чебыкин       | Python Developer     | chebykin.ag@yandex.ru           | [m0t0r0v](https://github.com/m0t0r0v)                 |
+| Денис Фадеев        | Python Developer     | denfizzz1978@yandex.ru          | [Denfizzz](https://github.com/Denfizzz)               |
+| Артем Шенин         | Python Developer     | rassada2021@yandex.ru           | [Artem-SPb](https://github.com/Artem-SPb)             |
+| Петр Виноградов     | Python Developer     | petrowaw@yandex.ru              | [PeterFVin](https://github.com/PeterFVin)             |
+| Денис Смирнов       | Python Developer     | smirnov.denis900@yandex.ru      | [dxndigiden](https://github.com/dxndigiden)           |
+| Евгений Соколов     | Team Lead            | ea.sokolov.87@yandex.ru         | [YevgeniySokolov](https://github.com/YevgeniySokolov) |
