@@ -58,7 +58,7 @@ async def timer_action(
                          if data.get('school21_nickname') else 'Пусто')
     team_name = data.get('team_name') if data.get('team_name') else 'Пусто'
     role = role if data.get('role_level') else 'Пусто'
-    level_id = level_id if data.get('role_level') else 0
+    level_id = level_id if data.get('role_level') else 1
     description = (
         data.get('activity_description')
         if data.get('activity_description')
