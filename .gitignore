@@ -15,6 +15,7 @@ downloads/
 eggs/
 .eggs/
 lib/
+temp/
 lib64/
 parts/
 sdist/
@@ -60,6 +61,7 @@ cover/
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
+*.db
 
 # Flask stuff:
 instance/
@@ -129,6 +131,10 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+myenv
+myenv.
+myenv.bak
+myenv/
 
 # Spyder project settings
 .spyderproject

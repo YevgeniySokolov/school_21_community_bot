@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  admin:
+    build:
+      context: .
+      dockerfile: ./admin/Dockerfile.admin  # Docker-файл для админки
+    volumes:
+      - database_data:/app/database  # Общий том для базы данных
+      - .:/app
+    environment:
+      - "PYTHONPATH=/app"
+    ports:
+      - "8500:8500"  # Порт для админки Streamlit
+    env_file:
+      - .env
+
+  bot:
+    build:
+      context: .
+      dockerfile: ./bot/Dockerfile.bot
+    volumes:
+      - database_data:/app/database  # Общий том для базы данных
+      - .:/app  # Монтируем корень проекта для бота
+    environment:
+      - "ALEMBIC_CONFIG=/app/database/alembic.ini"
+      - "PYTHONPATH=/app"
+      - "TELEGRAM_TOKEN=${TELEGRAM_TOKEN}"  # Токен бота из .env
+      - "DATABASE_URL=${DATABASE_URL}"
+    depends_on:
+      - admin
+    env_file:
+      - .env
+
+  gateway:
+    build:
+      context: .
+      dockerfile: ./gateway/Dockerfile.gateway
+    depends_on:
+      - admin
+    env_file: .env
+    ports:
+      - "8582:8500"  # Внешний порт gateway на 8500, чтобы избежать конфликта
+    environment:
+      - "HOST=0.0.0.0"  # Добавлено для совместимости с Nginx
+
+volumes:
+  database_data:
+    driver: local

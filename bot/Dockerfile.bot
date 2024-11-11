@@ -1,0 +1,21 @@
+# Dockerfile.bot
+# Указываем базовый образ с Python
+FROM python:3.9.10-slim
+
+# Устанавливаем рабочую директорию внутри контейнера
+WORKDIR /app
+
+# Копируем все файлы проекта в контейнер
+COPY ./requirements.txt /app/requirements.txt
+COPY . /app
+
+# Устанавливаем зависимости проекта
+RUN pip install --upgrade pip && \
+    pip install -r /app/requirements.txt
+
+# Указываем переменные окружения
+ENV ALEMBIC_CONFIG=/app/database/alembic.ini
+ENV PYTHONPATH=/app
+
+# Команда для запуска только бота
+ENTRYPOINT ["python", "/app/main.py"]
