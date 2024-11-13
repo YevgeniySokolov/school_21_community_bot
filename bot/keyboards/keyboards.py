@@ -48,7 +48,7 @@ async def get_inline_keyboard(
         objects.remove("Пусто")
     builder = InlineKeyboardBuilder()
     for item in objects:
-        builder.button(text=str(item), callback_data=str(item))
+        builder.button(text=str(item)[:64], callback_data=str(item)[:64])
     if not hasattr(obj, "role"):
         builder.button(text="Назад", callback_data="Back")
     builder.adjust(2)
@@ -56,7 +56,7 @@ async def get_inline_keyboard(
     return builder.as_markup(resize_keyboard=True)
 
 
-async def get_admin_buttons() -> InlineKeyboardMarkup:
+async def get_admin_buttons(telegram_id: int = None) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     builder.button(
         text="Шифрование/дешифровка БД",
@@ -70,9 +70,14 @@ async def get_admin_buttons() -> InlineKeyboardMarkup:
         text="Загрузка в БД",
         callback_data=str("fixtures_import")
     )
+    # Генерируем URL с использованием telegram_id, если он передан
+    if telegram_id is not None:
+        url = f"https://school21.online:8500/?telegram_id={telegram_id}"
+    else:
+        url = "https://school21.online:8500/"
     builder.button(
         text="WEB-admin",
-        url="https://school21.online:8581/"
+        url=url
     )
     builder.button(
         text="В начало",

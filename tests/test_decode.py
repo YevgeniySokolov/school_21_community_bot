@@ -1,8 +1,9 @@
 import pytest
 
+from tests.constants import TestStrValues
+
 from bot.utils import xor_encr_decr
 from database.models import AdminSettings, User
-from tests.constants import TestStrValues
 
 
 def encrypt_user_attributes(user):

@@ -192,7 +192,6 @@ async def main(session):
     # Получаем параметр telegram_id из URL
     query_params = st.query_params
     telegram_id_from_url = query_params.get('telegram_id', [None])[0]
-    telegram_id_from_url = 393507748
     if st.sidebar.button("Получить доступ"):
         db = session
         telegram_id_from_db = await get_telegram_id(username, db)

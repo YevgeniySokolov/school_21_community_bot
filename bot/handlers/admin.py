@@ -37,7 +37,10 @@ async def role_selection_keyb(message: Message, state: FSMContext):
         Admin_messages.LIST_COMMANDS,
         reply_markup=ReplyKeyboardRemove()
     )
-    keyboard = await get_admin_buttons()
+    # Получаем telegram_id пользователя
+    telegram_id = message.from_user.id
+    # Передаем telegram_id в функцию
+    keyboard = await get_admin_buttons(telegram_id)
     await message.answer(
         Admin_messages.LIST_DESCRIPTION,
         reply_markup=keyboard

@@ -3,6 +3,7 @@ import json
 import logging
 import os
 import re
+import time
 
 import aiofiles
 from aiogram.exceptions import TelegramBadRequest
@@ -12,14 +13,12 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
-from bot.keyboards.keyboards import (get_buttons,
-                                     get_card_button,
-                                     get_keyboard)
+from bot.keyboards.keyboards import get_buttons, get_card_button, get_keyboard
 from bot.messages import Buttons, Messages
 from database.models import Level, User
 from logger.logmessages import LogMessage
 from settings import (CHANNEL_ID, START_OFFSET, STATES_COLLECTION,
-                      TIMER_USER_STEP)
+                      TIME_EXPIRE_HOUR, TIMER_USER_STEP)
 
 hndlr_logger = logging.getLogger('HNDLR_LOGGER')
 
@@ -115,7 +114,7 @@ async def timer_action(
 async def create_invite_link(bot, chat_id):
     invite_link: ChatInviteLink = await bot.create_chat_invite_link(
         chat_id=chat_id,
-        # expire_date=int(time.time()) + (3600 * TIME_EXPIRE_HOUR),
+        expire_date=int(time.time()) + (3600 * TIME_EXPIRE_HOUR),
         member_limit=1,  # Лимит на одного пользователя
     )
     return invite_link.invite_link
@@ -320,7 +319,6 @@ async def parse_level_and_role(input_str, session: AsyncSession):
         level_id = 1  # Если уровень не найден, ставим "Не важно"
         # Вся строка — это роль
         role = input_str.strip()
-
     return level_id, role
 
 
