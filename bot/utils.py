@@ -12,7 +12,9 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
-from bot.keyboards.keyboards import get_buttons, get_card_button
+from bot.keyboards.keyboards import (get_buttons,
+                                     get_card_button,
+                                     get_keyboard)
 from bot.messages import Buttons, Messages
 from database.models import Level, User
 from logger.logmessages import LogMessage
@@ -38,7 +40,19 @@ async def timer_action(
     Если в базе данных уже присутствует пользователь, запись обновляется.
     """
     await asyncio.sleep(TIMER_USER_STEP * 3600)
-    await message.answer(Messages.USER_BREAKE_OUT_REGISTRATION)
+    telegram_id = message.from_user.id
+    is_registered = await get_user_registered(session, telegram_id)
+    existing_user = await check_user_exists(session, telegram_id)
+    is_admin = await get_user_admin(session, telegram_id)
+    keyboard = get_keyboard(
+        is_registered=is_registered,
+        existing_user=existing_user,
+        is_admin=is_admin
+    )
+    await message.answer(
+        Messages.USER_BREAKE_OUT_REGISTRATION,
+        reply_markup=keyboard
+    )
     data = await state.get_data()
 
     field_not_filled = next(
@@ -51,7 +65,6 @@ async def timer_action(
         level_id, role = await parse_level_and_role(
             data['role_level'], session
         )
-    telegram_id = message.from_user.id
     username = message.from_user.username
     sber_id = data.get('sber_id') if data.get('sber_id') else 'Пусто'
     school21_nickname = (data.get('school21_nickname')

@@ -223,7 +223,7 @@ async def skip_description_callback(
     session: AsyncSession,
 ):
     await state.set_state(Registration.waiting_for_skip_description)
-    await state.update_data(activity_description=None)
+    await state.update_data(activity_description='Шаг пропущен')
     # Передаем флаг skip=True для обработки пропуска
     await process_activity_description(
         callback_query.message, state, skip=True
