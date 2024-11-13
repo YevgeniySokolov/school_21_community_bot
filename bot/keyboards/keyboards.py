@@ -44,6 +44,8 @@ async def get_inline_keyboard(
     else:
         result = await session.execute(select(obj))
     objects = result.scalars().all()
+    if "Пусто" in objects:
+        objects.remove("Пусто")
     builder = InlineKeyboardBuilder()
     for item in objects:
         builder.button(text=str(item), callback_data=str(item))
