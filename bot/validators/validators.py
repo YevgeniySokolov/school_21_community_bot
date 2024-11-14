@@ -1,3 +1,5 @@
+import re
+
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from .base import validate_existence, validate_length, validate_pattern
@@ -97,5 +99,30 @@ async def validate_description(
     )
     if length_error:
         return length_error
+
+    return None
+
+
+async def validate_role_level(
+        role_level: str,
+        session: AsyncSession
+):
+    # Проверка на паттерн
+    pattern_error = await validate_pattern(
+        role_level,
+        ValidatorsStrValues.ROLE_PATTERN,
+        ValidatorsMessages.ROLE_ERROR
+    )
+
+    if pattern_error:
+        return pattern_error
+
+    # Проверка на корректность ввода уровня
+    match = re.match(ValidatorsStrValues.ROLE_PATTERN, role_level)
+
+    if (match is None or
+            (match.group(1) in ValidatorsStrValues.ROLE_LEVELS and
+             not match.group(2))):
+        return ValidatorsMessages.ROLE_ERROR
 
     return None

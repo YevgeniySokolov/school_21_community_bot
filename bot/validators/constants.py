@@ -15,6 +15,8 @@ class ValidatorsStrValues:
         r"^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~.-]+"
         r"(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~.-]+)*$"
     )
+    ROLE_PATTERN = r"^([а-яА-Яa-zA-Z\-]+)(?:\s+([а-яА-Яa-zA-Z\- ]+))?$"
+    ROLE_LEVELS = ("Junior", "Middle", "Senior", "Lead", "Стажер")
 
 
 class ValidatorsMessages:
@@ -46,4 +48,8 @@ class ValidatorsMessages:
     SCHOOL21NICKNAME_EXIST_ERROR = (
         f"Такой пользователь уже есть. Поищи канал в списке своих чатов\n"
         f"или напиши нам на почту: {ValidatorsStrValues.SUPPORT_EMAIL}."
+    )
+    ROLE_ERROR = (
+        "Введите, пожалуйста, корректный уровень и роль через пробел\n"
+        "Например, Senior python разработчик"
     )

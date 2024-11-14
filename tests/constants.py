@@ -13,12 +13,13 @@ class TestIntValues:
 
 class TestStrValues:
 
-    DATABASE_URL = os.getenv('DATABASE_URL')
-    TELEGRAM_TOKEN = os.getenv('TELEGRAM_TOKEN')
-    CHANNEL_ID = os.getenv('CHANNEL_ID')
+    DATABASE_URL = os.getenv("DATABASE_URL")
+    TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
+    CHANNEL_ID = os.getenv("CHANNEL_ID")
     TEST_TELEGRAM_TOKEN = "test_telegram_token"
     TEST_CHANNEL_ID = -123456344
     TEST_INVITE_LINK = "https://t.me/joinchat/test_invite_link"
+    ALEMBIC_CONFIG = os.getenv("ALEMBIC_CONFIG")
 
 
 class TestMessages:

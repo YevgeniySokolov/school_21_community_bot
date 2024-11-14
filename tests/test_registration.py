@@ -64,6 +64,7 @@ def create_mock_message(user, chat):
     mock_message.from_user = user
     mock_message.chat = chat
     mock_message.answer = AsyncMock()
+    mock_message.reply = AsyncMock()
     return mock_message
 
 
@@ -369,13 +370,18 @@ async def test_process_role():
     mock_user = create_mock_user()
     mock_chat = create_mock_chat()
     mock_message = create_mock_message(mock_user, mock_chat)
-    mock_message.text = "test_role_level"
+    mock_message.text = "Test role level"
     mock_state = AsyncMock(spec=FSMContext)
     mock_session = AsyncMock(spec=AsyncSession)
 
-    await process_role(mock_message, mock_state, session=mock_session)
+    with patch(
+        "school_21_community_bot_3.bot.handlers.registration."
+        "validate_and_update_state",
+        return_value=True
+    ):
+        await process_role(mock_message, mock_state, session=mock_session)
 
-    mock_state.update_data.assert_any_call(role_level='test_role_level')
+    mock_state.update_data.assert_any_call(role_level='Test role level')
 
     mock_message.answer.assert_called_once_with(
         Messages.ENTER_ABOUT,

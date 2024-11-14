@@ -8,7 +8,8 @@ def test_environment_variables():
     """Тест на наличие необходимых переменных окружения."""
     required_vars = [
         TestStrValues.TELEGRAM_TOKEN,
-        TestStrValues.CHANNEL_ID
+        TestStrValues.CHANNEL_ID,
+        TestStrValues.ALEMBIC_CONFIG
     ]
     for var in required_vars:
         assert var is not None, TestMessages.ERROR_ENV_VAR_NOT_SET.format(var)

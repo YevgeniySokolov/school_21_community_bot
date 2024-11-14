@@ -1,7 +1,6 @@
 import pytest
 
-from tests.constants import TestStrValues
-
+from .constants import TestStrValues
 from bot.utils import xor_encr_decr
 from database.models import AdminSettings, User
 

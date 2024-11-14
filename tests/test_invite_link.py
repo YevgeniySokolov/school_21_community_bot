@@ -1,4 +1,4 @@
-from unittest.mock import AsyncMock, MagicMock
+from unittest.mock import ANY, AsyncMock, MagicMock
 
 import pytest
 from aiogram.exceptions import TelegramBadRequest
@@ -23,6 +23,7 @@ async def test_create_invite_link():
     assert invite_link == TestStrValues.TEST_INVITE_LINK
     bot.create_chat_invite_link.assert_called_once_with(
         chat_id=TestStrValues.TEST_CHANNEL_ID,
+        expire_date=ANY,
         member_limit=1
     )
 

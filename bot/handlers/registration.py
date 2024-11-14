@@ -1,6 +1,5 @@
 import asyncio
 import logging
-import re
 
 from aiogram import F
 from aiogram.dispatcher.router import Router
@@ -20,7 +19,8 @@ from bot.utils import (check_user_exists, get_user_admin, get_user_db_data,
                        get_user_registered, parse_level_and_role,
                        save_or_update_user, send_invite_link, timer_action)
 from bot.validators.base import validate_and_update_state
-from bot.validators.validators import (validate_description, validate_sber_id,
+from bot.validators.validators import (validate_description,
+                                       validate_role_level, validate_sber_id,
                                        validate_school21_nickname,
                                        validate_team_name)
 from logger.logmessages import LogMessage
@@ -205,26 +205,20 @@ async def process_role(
     state: FSMContext,
     session: AsyncSession
 ):
-    role_level_pattern = r"^([а-яА-Яa-zA-Z\-]+)(?:\s+([а-яА-Яa-zA-Z\- ]+))?$"
-    match = re.match(role_level_pattern, message.text)
-
-    # Проверка на корректность ввода
-    if match is None or (match.group(1) in ["Junior", "Middle", "Senior", "Lead", "Стажер"] and not match.group(2)):
+    # Валидация уровня и роли
+    if await validate_and_update_state(
+        message,
+        state,
+        validate_role_level,
+        'role_level',
+        session
+    ):
+        # Запросить информацию о том, над чем работает пользователь
         await message.answer(
-            "Введите, пожалуйста, корректный уровень и роль через пробел\n"
-            "Например, Senior python разработчик"
+            Messages.ENTER_ABOUT,
+            reply_markup=get_skip_inline_keyboard()
         )
-        return
-
-    # Получаем ответ об уровне и роли пользователя
-    await state.update_data(role_level=message.text)
-
-    # Над чем работаешь? И кнопка пропустить
-    await message.answer(
-        Messages.ENTER_ABOUT,
-        reply_markup=get_skip_inline_keyboard()
-    )
-    await state.set_state(Registration.waiting_for_activity_description)
+        await state.set_state(Registration.waiting_for_activity_description)
 
 
 @router.callback_query(F.data == "skip_description")

@@ -27,7 +27,6 @@ def mock_objects():
     return mock_user, mock_chat, mock_message, mock_callback_query
 
 
-@pytest.mark.skip(reason="Тест выведен на доработку")
 @pytest.mark.asyncio
 async def test_role_selection_keyb(mock_objects):
     """Тестирование кнопки "Продолжить"."""
@@ -38,9 +37,16 @@ async def test_role_selection_keyb(mock_objects):
     mock_state.update_data = AsyncMock()
     mock_state.set_state = AsyncMock()
 
+    mock_keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(
+            text="golang разработчик",
+            callback_data="golang разработчик"
+        )]
+    ])
+
     with patch(
         "school_21_community_bot_3.bot.handlers.search.get_inline_keyboard",
-        return_value=InlineKeyboardMarkup(inline_keyboard=[])
+        return_value=mock_keyboard
     ):
         await role_selection_keyb(
             mock_message,
@@ -56,12 +62,11 @@ async def test_role_selection_keyb(mock_objects):
     )
     mock_message.answer.assert_any_call(
         Messages.WHOS_LOOKING_FOR,
-        reply_markup=InlineKeyboardMarkup(inline_keyboard=[])
+        reply_markup=mock_keyboard
     )
     mock_state.set_state.assert_called_once_with(Search.waiting_for_role)
 
 
-@pytest.mark.skip(reason="Тест выведен на доработку")
 @pytest.mark.asyncio
 async def test_choosing_a_role():
     """Тестирование фильтрации по роли."""
@@ -84,8 +89,8 @@ async def test_choosing_a_role():
          InlineKeyboardButton(text='Lead', callback_data='Lead')],
         [InlineKeyboardButton(text='Middle', callback_data='Middle'),
          InlineKeyboardButton(text='Senior', callback_data='Senior')],
-        [InlineKeyboardButton(text='Стажер', callback_data='Стажер'),
-         InlineKeyboardButton(text='Не важно', callback_data='Не важно')],
+        [InlineKeyboardButton(text='Не важно', callback_data='Не важно'),
+         InlineKeyboardButton(text='Стажер', callback_data='Стажер')],
         [InlineKeyboardButton(text='Назад', callback_data='Back')]
     ])
 
@@ -98,17 +103,19 @@ async def test_choosing_a_role():
             state=mock_state,
             session=mock_session
         )
-    # Проверяем обновление данных состояния и отправку сообщений
+
     mock_state.update_data.assert_called_once_with(role="role_example")
+
+    expected_message_text = Messages.WHAT_LEVEL
     mock_callback_query.message.answer.assert_called_once_with(
-        Messages.WHAT_LEVEL,
+        expected_message_text,
         reply_markup=mock_keyboard
     )
+
     mock_callback_query.answer.assert_called_once()
     mock_state.set_state.assert_called_once_with(Search.waiting_for_level)
 
 
-@pytest.mark.skip(reason="Тест выведен на доработку")
 @pytest.mark.asyncio
 async def test_go_to_searching_start(mock_objects):
     """Тестирование функции для обработки нажатия кнопки "Назад"."""
@@ -121,7 +128,12 @@ async def test_go_to_searching_start(mock_objects):
 
     mock_state.update_data = AsyncMock()
     mock_state.set_state = AsyncMock()
-    mock_keyboard = InlineKeyboardMarkup(inline_keyboard=[])
+    mock_keyboard = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(
+            text="golang разработчик",
+            callback_data="golang разработчик"
+        )]
+    ])
 
     with patch(
         "school_21_community_bot_3.bot.handlers.search.get_inline_keyboard",

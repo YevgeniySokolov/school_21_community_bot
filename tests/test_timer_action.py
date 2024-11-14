@@ -1,4 +1,4 @@
-from unittest.mock import AsyncMock, patch
+from unittest.mock import ANY, AsyncMock, patch
 
 import pytest
 from aiogram.types import Message
@@ -70,7 +70,8 @@ async def test_timer_action_user_exists(setup_timer_action):
 
             mock_update_user.assert_called_once()
             message.answer.assert_called_once_with(
-                Messages.USER_BREAKE_OUT_REGISTRATION
+                Messages.USER_BREAKE_OUT_REGISTRATION,
+                reply_markup=ANY
             )
 
 
@@ -106,7 +107,8 @@ async def test_timer_action_user_does_not_exist(setup_timer_action):
 
             mock_update_user.assert_called_once()
             message.answer.assert_called_once_with(
-                Messages.USER_BREAKE_OUT_REGISTRATION
+                Messages.USER_BREAKE_OUT_REGISTRATION,
+                reply_markup=ANY
             )
 
 
@@ -142,5 +144,6 @@ async def test_timer_action_with_empty_fields(setup_timer_action):
 
             mock_update_user.assert_called_once()
             message.answer.assert_called_once_with(
-                Messages.USER_BREAKE_OUT_REGISTRATION
+                Messages.USER_BREAKE_OUT_REGISTRATION,
+                reply_markup=ANY
             )
