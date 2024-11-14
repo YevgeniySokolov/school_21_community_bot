@@ -8,7 +8,7 @@ from graphs import (plot_incomplete_registration_bar_chart,
                     plot_registration_status_distribution_in_users,
                     render_registered_users_roles_distribution_pie_chart,
                     render_user_level_distribution)
-from stream_db import get_telegram_id
+from stream_db import get_telegram_id, is_user_admin
 from user_management import update_metrics
 from user_visualization import (display_registration_time,
                                 display_search_users, display_statics,
@@ -192,17 +192,27 @@ async def main(session):
     # Получаем параметр telegram_id из URL
     query_params = st.query_params
     telegram_id_from_url = query_params.get('telegram_id', [None])[0]
+
     if st.sidebar.button("Получить доступ"):
         db = session
         telegram_id_from_db = await get_telegram_id(username, db)
-        if telegram_id_from_db:
+        # Проверяем, является ли пользователь администратором
+        is_admin = await is_user_admin(username, db)
+
+        if telegram_id_from_url:
+            # Если telegram_id совпадает
             if telegram_id_from_url == telegram_id_from_db:
                 st.session_state.is_authenticated = True
                 st.success("Добро пожаловать, администратор!")
             else:
                 st.error("У Вас нет прав доступа к этой странице.")
         else:
-            st.error("Пользователь не найден.")
+            if is_admin:  # Если пользователь администратор, разрешаем доступ
+                st.session_state.is_authenticated = True
+                st.success("Добро пожаловать, администратор!")
+            else:
+                st.error("У Вас нет прав доступа к этой странице.")
+
     if st.session_state.is_authenticated:
         await display_sidebar()
 

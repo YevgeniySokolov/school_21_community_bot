@@ -142,3 +142,14 @@ async def get_telegram_id(username: str, db: AsyncSession):
     )
     user_telegram_id = result.scalar_one_or_none()
     return user_telegram_id
+
+
+async def is_user_admin(username: str, db: AsyncSession) -> bool:
+    """
+    Проверяет, является ли пользователь администратором по username.
+    """
+    result = await db.execute(
+        select(User.is_admin).where(User.username == username)
+    )
+    is_admin = result.scalar_one_or_none()
+    return is_admin if is_admin is not None else False
