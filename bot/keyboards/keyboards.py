@@ -37,15 +37,13 @@ async def get_inline_keyboard(
         session: AsyncSession,
         obj: object,
 ) -> InlineKeyboardMarkup:
-    if hasattr(obj, "role"):
-        result = await session.execute(select(distinct(obj.role)))
+    if hasattr(obj, "role") and (obj, "is_registered"):
+        result = await session.execute(select(distinct(obj.role)).where(obj.is_registered))
     elif obj is Level:
         result = await session.execute(select(distinct(Level.name)))
     else:
         result = await session.execute(select(obj))
     objects = result.scalars().all()
-    if "Пусто" in objects:
-        objects.remove("Пусто")
     builder = InlineKeyboardBuilder()
     for item in objects:
         builder.button(text=str(item)[:64], callback_data=str(item)[:64])
