@@ -1,6 +1,6 @@
 import asyncio
 import logging
-# import re
+import re
 
 from aiogram import F
 from aiogram.dispatcher.router import Router
@@ -205,14 +205,16 @@ async def process_role(
     state: FSMContext,
     session: AsyncSession
 ):
-    # role_level_pattern = r"^(Junior|Middle|Senior|Lead|Стажер)\s([а-яА-Яa-zA-Z][а-яА-Яa-zA-Z\- ]*)$"
-    # match = re.match(role_level_pattern, message.text)
-    # if match is None or not match.group(2):
-    #     await message.answer(
-    #         "Введите, пожалуйста, корректный уровень и роль через пробел\n"
-    #         "Например, Senior python разработчик"
-    #     )
-    #     return
+    role_level_pattern = r"^([а-яА-Яa-zA-Z\-]+)(?:\s+([а-яА-Яa-zA-Z\- ]+))?$"
+    match = re.match(role_level_pattern, message.text)
+
+    # Проверка на корректность ввода
+    if match is None or (match.group(1) in ["Junior", "Middle", "Senior", "Lead", "Стажер"] and not match.group(2)):
+        await message.answer(
+            "Введите, пожалуйста, корректный уровень и роль через пробел\n"
+            "Например, Senior python разработчик"
+        )
+        return
 
     # Получаем ответ об уровне и роли пользователя
     await state.update_data(role_level=message.text)
